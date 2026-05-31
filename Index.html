@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OSINT AI</title>
+  <meta charset="UTF-8">
+  <style>
+    body { background: black; color: lime; font-family: monospace; padding: 20px; }
+    h1 { text-align: center; }
+    #chat { border: 1px solid lime; padding: 10px; height: 300px; overflow-y: auto; margin-bottom: 10px; }
+    #msg { background: black; color: lime; border: 1px solid lime; padding: 10px; width: 70%; }
+    button { background: lime; color: black; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; }
+    .user { color: white; }
+    .bot { color: lime; }
+  </style>
+</head>
+<body>
+  <h1>OSINT AI</h1>
+  
+  <div id="chat">
+    <p class="bot">Bonjour ! Je suis ton assistant OSINT. Pose-moi une question !</p>
+  </div>
+  <input id="msg" placeholder="Pose ta question...">
+  <button onclick="envoyer()">Envoyer</button>
+
+  <script>
+    const CLE = "AQ.Ab8RN6J61gq-kkyGu3x2cPmCLHLvNNJDSxRnVxMOQPwJc-rpKQ";
+
+    async function envoyer() {
+      var msg = document.getElementById("msg").value;
+      if (!msg) return;
+      var chat = document.getElementById("chat");
+      chat.innerHTML += '<p class="user">Toi: ' + msg + '</p>';
+      document.getElementById("msg").value = "";
+      chat.innerHTML += '<p class="bot" id="rep">IA: En train de reflechir...</p>';
+
+      var res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + CLE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: "Tu es un assistant OSINT expert. Reponds en francais. Question: " + msg }] }]
+        })
+      });
+
+      var data = await res.json();
+      var reponse = data.candidates[0].content.parts[0].text;
+      document.getElementById("rep").innerHTML = "IA: " + reponse;
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>
