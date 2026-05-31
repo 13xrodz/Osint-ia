@@ -23,7 +23,7 @@
   <button onclick="envoyer()">Envoyer</button>
 
   <script>
-    const CLE = "AQ.Ab8RN6J61gq-kkyGu3x2cPmCLHLvNNJDSxRnVxMOQPwJc-rpKQ";
+    const CLE = "AQ.Ab8RN6JtfQP9X9PX1dQ2MtexKr_fiANMRtRRBvseYRjC2Kw8bg";
 
     async function envoyer() {
       var msg = document.getElementById("msg").value;
@@ -33,7 +33,7 @@
       document.getElementById("msg").value = "";
       chat.innerHTML += '<p class="bot" id="rep">IA: En train de reflechir...</p>';
 
-      var res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + CLE, {
+      var res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + CLE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
